@@ -1,0 +1,93 @@
+
+#include <iostream>
+#include <string>
+#include <vector>
+#include <cctype>
+using namespace std;
+
+int main()
+{
+    string word = "computer";
+    string guessWord(word.length(), '_');
+
+    char guess;
+    int wrongGuesses = 0;
+    int maxGuesses = 6;
+
+    vector<char> guessedLetters;
+
+    cout << "Welcome to Hangman!" << endl;
+
+    while (wrongGuesses < maxGuesses && guessWord != word)
+    {
+        cout << "\nWord: ";
+
+        for (int i = 0; i < guessWord.length(); i++)
+        {
+            cout << guessWord[i] << " ";
+        }
+
+        cout << "\nWrong guesses left: "
+             << maxGuesses - wrongGuesses << endl;
+
+        cout << "Guess a letter: ";
+        cin >> guess;
+
+        guess = tolower(guess);
+
+        // Check if letter was already guessed
+        bool alreadyGuessed = false;
+
+        for (int i = 0; i < guessedLetters.size(); i++)
+        {
+            if (guessedLetters[i] == guess)
+            {
+                alreadyGuessed = true;
+            }
+        }
+
+        if (alreadyGuessed)
+        {
+            cout << "You already guessed that letter!" << endl;
+            continue;
+        }
+
+        guessedLetters.push_back(guess);
+
+        // Check if the letter is in the word
+        bool correctGuess = false;
+
+        for (int i = 0; i < word.length(); i++)
+        {
+            if (word[i] == guess)
+            {
+                guessWord[i] = guess;
+                correctGuess = true;
+            }
+        }
+
+        if (correctGuess)
+        {
+            cout << "Correct guess!" << endl;
+        }
+        else
+        {
+            cout << "Wrong guess!" << endl;
+            wrongGuesses++;
+        }
+    }
+
+    // Display final result
+    if (guessWord == word)
+    {
+        cout << "\nCongratulations! You won!" << endl;
+        cout << "The word was: " << word << endl;
+    }
+    else
+    {
+        cout << "\nGame over! You lost!" << endl;
+        cout << "The word was: " << word << endl;
+    }
+
+    return 0;
+}
